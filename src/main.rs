@@ -1,7 +1,62 @@
+use std::collections::HashSet;
+
 fn main() {
+    main_part_1();
+    main_part_2();
+}
+
+fn main_part_1() {
     let input_file_name = "input.txt";
     let contents = std::fs::read_to_string(input_file_name).expect("Failed to read the input file");
-    println!("{}", contents.len());
+    let mut visited: HashSet<(i32, i32)> = HashSet::new();
+    let mut pos: (i32, i32) = (0, 0);
+    visited.insert(pos);
+
+    for c in contents.chars() {
+        if c == '^' {
+            pos.1 += 1; 
+        }
+        if c == 'v' {
+            pos.1 -= 1;
+        }
+        if c == '<' {
+            pos.0 -= 1;
+        }
+        if c == '>' {
+            pos.0 += 1;
+        }
+        visited.insert(pos);    
+    }
+    println!("Part 1: {}", visited.len());
+
+}
+
+fn main_part_2() {
+    let input_file_name = "input.txt";
+    let contents = std::fs::read_to_string(input_file_name).expect("Failed to read the input file");
+    let mut visited: HashSet<(i32, i32)> = HashSet::new();
+    let mut santa_pos: (i32, i32) = (0, 0);
+    let mut robo_santa_pos: (i32, i32) = (0,0);
+    visited.insert(santa_pos);
+
+    for (i,c) in contents.chars().enumerate() {
+        let pos = if i & 1 == 0 {&mut robo_santa_pos} else {&mut santa_pos};
+        if c == '^' {
+            pos.1 += 1; 
+        }
+        if c == 'v' {
+            pos.1 -= 1;
+        }
+        if c == '<' {
+            pos.0 -= 1;
+        }
+        if c == '>' {
+            pos.0 += 1;
+        }
+        visited.insert(*pos);    
+    }
+    println!("Part 2: {}", visited.len());
+
 }
 
 #[cfg(test)]
